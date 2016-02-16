@@ -1,6 +1,7 @@
 package braintree
 
 import (
+	"reflect"
 	"testing"
 )
 
@@ -108,5 +109,32 @@ func TestCustomer(t *testing.T) {
 	}
 	if c4 != nil {
 		t.Fatal(c4)
+	}
+}
+
+func TestCustomerWithCustomFields(t *testing.T) {
+	var err error
+	oc := &Customer{
+		FirstName: "With",
+		LastName:  "Customfield",
+		CustomFields: NewCustomFields(map[string]string{
+			"test-custom-field": "custom-field-value",
+		}),
+	}
+	oc, err = testGateway.Customer().Create(oc)
+	if err != nil {
+		t.Fatal("Failed to create customer")
+	}
+
+	expectedValues := reflect.DeepEqual(oc.CustomFields.Map(), map[string]string{
+		"test-custom-field": "custom-field-value",
+	})
+
+	if !expectedValues {
+		t.Fatal("did not receive the expected custom field values")
+	}
+
+	if oc.CustomFields.Get("test-custom-field") != "custom-field-value" {
+		t.Fatal("could not get custom field")
 	}
 }

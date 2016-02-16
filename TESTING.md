@@ -22,7 +22,7 @@ In your sandbox account go to `Settings > Processing > CVV` and enable the follo
   1. `CVV does not match (when provided) (N)` to `For Any Transaction`
   2. `CVV is not verified (when provided) (U)` to `For Any Transaction`
 
-Finally you will also need to create a transaction with a specific id, two plans, an add-on, and a discount. Once you do all of these things, the integration tests should all pass, with the one exception listed below.
+Finally you will also need to create a transaction with a specific id, two plans, an add-on, a discount and a custom field. Once you do all of these things, the integration tests should all pass, with the one exception listed below.
 
 **Transactions**
 
@@ -77,6 +77,14 @@ Amount:                 10
 Number of cycles:       For the duration of the subscription.
 ```
 
+**Custom fields**
+
+```
+Api name:               test_custom_field
+Display name:           test_custom_field_name
+Options:                Store and Pass Back
+```
+
 #### Testing disbursement details
 
-In Braintree's sandbox environment, transactions do not disburse immediately. The implementation of disbursement details is tested in `disbursement_integration_test.go` using an already-disbursed transaction on the sandbox account associated with the Travis CI build. This test does not pass in other environments, and serves as a proof-of-concept. To make all of the tests pass, you will either need to comment out this test, or replace the values inside of it with the values from a disbursed transaction on your account. 
+In Braintree's sandbox environment, transactions do not disburse immediately. The implementation of disbursement details is tested in `disbursement_integration_test.go` using an already-disbursed transaction on the sandbox account associated with the Travis CI build. This test does not pass in other environments, and serves as a proof-of-concept. To make all of the tests pass, you will either need to comment out this test, or replace the values inside of it with the values from a disbursed transaction on your account.
