@@ -26,6 +26,21 @@ func (g *AddressGateway) Create(a *Address) (*Address, error) {
 	return nil, &invalidResponseError{resp}
 }
 
+func (g *AddressGateway) Update(customerId, addrId string, a *Address) (*Address, error) {
+	var cp Address = *a
+	cp.CreatedAt = nil
+	cp.UpdatedAt = nil
+	resp, err := g.execute("PUT", "customers/"+customerId+"/addresses/"+addrId, &cp)
+	if err != nil {
+		return nil, err
+	}
+	switch resp.StatusCode {
+	case 200:
+		return resp.address()
+	}
+	return nil, &invalidResponseError{resp}
+}
+
 // Delete deletes the address for the specified id and customer id.
 func (g *AddressGateway) Delete(customerId, addrId string) error {
 	resp, err := g.execute("DELETE", "customers/"+customerId+"/addresses/"+addrId, nil)
