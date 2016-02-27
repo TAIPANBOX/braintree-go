@@ -30,6 +30,25 @@ func (w *WebhookNotificationGateway) Parse(signature, payload string) (*WebhookN
 	return &n, nil
 }
 
+func (w *WebhookNotificationGateway) Encode(notification *WebhookNotification) (signature, payload string, err error) {
+
+	xmlNotification, err := xml.Marshal(notification)
+	if err != nil {
+		return "", "", err
+	}
+
+	payload = base64.StdEncoding.EncodeToString(xmlNotification)
+
+	hmacer := newHmacer(w.Braintree)
+	hmacedPayload, err := hmacer.hmac(payload)
+	if err != nil {
+		return "", "", err
+	}
+	signature = w.PublicKey + "|" + hmacedPayload
+
+	return signature, payload, nil
+}
+
 func (w *WebhookNotificationGateway) Verify(challenge string) (string, error) {
 	hmacer := newHmacer(w.Braintree)
 	digest, err := hmacer.hmac(challenge)
