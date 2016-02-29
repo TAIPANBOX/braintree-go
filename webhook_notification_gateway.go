@@ -3,15 +3,43 @@ package braintree
 import (
 	"encoding/base64"
 	"encoding/xml"
+	"strings"
 )
 
 type WebhookNotificationGateway struct {
 	*Braintree
 }
 
-func (w *WebhookNotificationGateway) Parse(signature, payload string) (*WebhookNotification, error) {
+func parseSignature(publicKey, signature string) (string, error) {
+
+	signatureKeyPairs := strings.Split(signature, "&")
+
+	for _, signatureKeyPair := range signatureKeyPairs {
+		if !strings.Contains(signatureKeyPair, "|") {
+			return "", SignatureError{"Signature-key pair does not contain |"}
+		}
+		split := strings.Split(signatureKeyPair, "|")
+		if len(split) != 2 {
+			return "", SignatureError{"Signature-key pair contains more than one |"}
+		}
+		if split[0] == publicKey {
+			return split[1], nil
+		}
+
+	}
+
+	return "", SignatureError{"No Signature-key pair found with matching public key"}
+}
+
+func (w *WebhookNotificationGateway) Parse(signatures, payload string) (*WebhookNotification, error) {
+
+	matchedSignature, err := parseSignature(w.Braintree.PublicKey, signatures)
+	if err != nil {
+		return nil, err
+	}
+
 	hmacer := newHmacer(w.Braintree)
-	if verified, err := hmacer.verifySignature(signature, payload); err != nil {
+	if verified, err := hmacer.verifySignature(matchedSignature, payload); err != nil {
 		return nil, err
 	} else if !verified {
 		return nil, SignatureError{}
@@ -28,6 +56,7 @@ func (w *WebhookNotificationGateway) Parse(signature, payload string) (*WebhookN
 		return nil, err
 	}
 	return &n, nil
+
 }
 
 func (w *WebhookNotificationGateway) Encode(notification *WebhookNotification) (signature, payload string, err error) {

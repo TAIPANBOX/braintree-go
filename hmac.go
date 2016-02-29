@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"strings"
 )
 
 type SignatureError struct {
@@ -29,30 +28,11 @@ type hmacer struct {
 }
 
 func (h hmacer) verifySignature(signature, payload string) (bool, error) {
-	signature, err := h.parseSignature(signature)
-	if err != nil {
-		return false, err
-	}
 	expectedSignature, err := h.hmac(payload)
 	if err != nil {
 		return false, err
 	}
 	return hmac.Equal([]byte(expectedSignature), []byte(signature)), nil
-}
-
-func (h hmacer) parseSignature(signatureKeyPair string) (string, error) {
-	if !strings.Contains(signatureKeyPair, "|") {
-		return "", SignatureError{"Signature-key pair does not contain |"}
-	}
-	split := strings.Split(signatureKeyPair, "|")
-	if len(split) != 2 {
-		return "", SignatureError{"Signature-key pair contains more than one |"}
-	}
-	publicKey := split[0]
-	if publicKey != h.Braintree.PublicKey {
-		return "", SignatureError{"Signature-key pair contains the wrong public key!"}
-	}
-	return split[1], nil
 }
 
 func (h hmacer) hmac(payload string) (string, error) {
