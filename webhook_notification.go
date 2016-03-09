@@ -28,7 +28,7 @@ type WebhookNotification struct {
 	XMLName   xml.Name        `xml:"notification"`
 	Timestamp time.Time       `xml:"timestamp"`
 	Kind      string          `xml:"kind"`
-	Subject   *webhookSubject `xml:"subject"`
+	Subject   *WebhookSubject `xml:"subject"`
 }
 
 func (n *WebhookNotification) MerchantAccount() *MerchantAccount {
@@ -48,7 +48,7 @@ func (n *WebhookNotification) Disbursement() *Disbursement {
 	}
 }
 
-type webhookSubject struct {
+type WebhookSubject struct {
 	XMLName          xml.Name         `xml:"subject"`
 	APIErrorResponse *BraintreeError  `xml:",omitempty"`
 	Disbursement     *Disbursement    `xml:"disbursement,omitempty"`
