@@ -38,6 +38,7 @@ type Subscription struct {
 	TrialDurationUnit       string               `xml:"trial-duration-unit,omitempty"`
 	TrialPeriod             *nullable.NullBool   `xml:"trial-period,omitempty"`
 	Transactions            *Transactions        `xml:"transactions,omitempty"`
+	Customer                *Customer            `xml:"customer,omitempty"`
 	Options                 *SubscriptionOptions `xml:"options,omitempty"`
 	// AddOns                  []interface{} `xml:"add-ons,omitempty"`
 	// Descriptor              interface{}   `xml:"descriptor,omitempty"`   // struct with name, phone
