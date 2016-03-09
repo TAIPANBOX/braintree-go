@@ -17,6 +17,7 @@ type Transaction struct {
 	PaymentMethodNonce    string               `xml:"payment-method-nonce,omitempty"`
 	MerchantAccountId     string               `xml:"merchant-account-id,omitempty"`
 	PlanId                string               `xml:"plan-id,omitempty"`
+	CurrencyIsoCode       string               `xml:"currency-iso-code,omitempty"`
 	CreditCard            *CreditCard          `xml:"credit-card,omitempty"`
 	Customer              *Customer            `xml:"customer,omitempty"`
 	BillingAddress        *Address             `xml:"billing,omitempty"`
