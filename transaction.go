@@ -15,6 +15,7 @@ type Transaction struct {
 	OrderId               string               `xml:"order-id,omitempty"`
 	PaymentMethodToken    string               `xml:"payment-method-token,omitempty"`
 	PaymentMethodNonce    string               `xml:"payment-method-nonce,omitempty"`
+	PaymentInstrumentType string               `xml:"payment-instrument-type,omitempty"`
 	MerchantAccountId     string               `xml:"merchant-account-id,omitempty"`
 	PlanId                string               `xml:"plan-id,omitempty"`
 	CurrencyIsoCode       string               `xml:"currency-iso-code,omitempty"`
