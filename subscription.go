@@ -40,6 +40,7 @@ type Subscription struct {
 	Transactions            *Transactions        `xml:"transactions,omitempty"`
 	Customer                *Customer            `xml:"customer,omitempty"`
 	Options                 *SubscriptionOptions `xml:"options,omitempty"`
+	StatusHistory           *StatusHistory       `xml:"status-history,omitempty"`
 	// AddOns                  []interface{} `xml:"add-ons,omitempty"`
 	// Descriptor              interface{}   `xml:"descriptor,omitempty"`   // struct with name, phone
 }
