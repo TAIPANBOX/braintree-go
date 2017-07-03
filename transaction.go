@@ -1,8 +1,9 @@
 package braintree
 
 import (
-	"github.com/lionelbarrow/braintree-go/nullable"
 	"time"
+
+	"github.com/lionelbarrow/braintree-go/nullable"
 )
 
 type Transaction struct {
@@ -19,6 +20,8 @@ type Transaction struct {
 	MerchantAccountId     string               `xml:"merchant-account-id,omitempty"`
 	PlanId                string               `xml:"plan-id,omitempty"`
 	CurrencyIsoCode       string               `xml:"currency-iso-code,omitempty"`
+	ProcessorResponseCode int                  `xml:"processor-response-code,omitempty"`
+	ProcessorResponseText string               `xml:"processor-response-text,omitempty"`
 	CreditCard            *CreditCard          `xml:"credit-card,omitempty"`
 	Customer              *Customer            `xml:"customer,omitempty"`
 	BillingAddress        *Address             `xml:"billing,omitempty"`
