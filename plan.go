@@ -1,8 +1,9 @@
 package braintree
 
 import (
-	"github.com/lionelbarrow/braintree-go/nullable"
 	"time"
+
+	"github.com/smallpdf/braintree-go/nullable"
 )
 
 type Plan struct {

@@ -3,7 +3,7 @@ package braintree
 import (
 	"time"
 
-	"github.com/lionelbarrow/braintree-go/nullable"
+	"github.com/smallpdf/braintree-go/nullable"
 )
 
 type Transaction struct {
